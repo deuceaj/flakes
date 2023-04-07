@@ -13,11 +13,12 @@ mkswap -L swap /dev/vda2
 mkfs.fat -F 32 -n boot /dev/vda3
 
 # Mount Partitions
-mount /dev/disk/by-label/nixos /mnt
-mkdir -p /mnt/boot
-mount /dev/disk/by-label/boot /mnt/boot
-swapon /dev/vda2
-
+mount -t tmpfs none /mnt 
+mkdir -p /mnt/{boot,nix,etc/nixos}
+mount /dev/vda1 /mnt/nix
+mount /dev/vda3 /mnt/boot 
+mkdir -p /mnt/nix/persist/etc/nixos
+mount -o bind /mnt/nix/persist/etc/nixos /mnt/etc/nixos
 # Generate Nixos Config file
 # nixos-generate-config --root /mnt
 # cd /mnt/etc/nixos

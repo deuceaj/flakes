@@ -316,7 +316,8 @@
       #-----------------------#
       # wall(by swww service) #
       #-----------------------#
-      exec-once = swww-daemon && default_wall 
+      exec-once = swww-daemon
+      exec-once = default_wall 
 
       #------------#
       # auto start #

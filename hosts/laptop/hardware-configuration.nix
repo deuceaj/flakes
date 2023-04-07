@@ -5,35 +5,36 @@
 
 {
   imports =
-    [
-      (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+    [ (modulesPath + "/installer/scan/not-detected.nix")
+      (modulesPath + "/profiles/qemu-guest.nix")
+      ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    {
-      device = "none";
+   fileSystems."/" =
+    { device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=12G" "mode=755" ];
     };
 
   fileSystems."/nix" =
-    {
-      device = "/dev/disk/by-uuid/49e24551-c0e0-48ed-833d-da8289d79cdd";
+    { device = "/dev/disk/by-uuid/c6f0436b-2e54-4cf0-91e8-42f66cabf51a";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    {
-      device = "/dev/disk/by-uuid/3C0D-7D32";
+    { device = "/dev/disk/by-uuid/CC08-EF56";
       fsType = "vfat";
     };
 
-  swapDevices = [ ];
+  fileSystems."/etc/nixos" =
+    { device = "/nix/persist/etc/nixos";
+      fsType = "none";
+      options = [ "bind" ];
+    };
+
+  swapDevices =
+    [ { device = "/dev/disk/by-uuid/5285c216-5537-4332-8c63-7917dcdb8969"; }
+    ];
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
